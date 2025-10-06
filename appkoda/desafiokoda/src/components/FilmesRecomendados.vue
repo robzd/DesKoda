@@ -1,31 +1,54 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-const filmes = ref([])
+const filmes = ref([]);
+const logo = ref();
+
+const token =
+  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNmEwZDJhMzM1NWQxOTUwYTVhNjZmYjZjNDExNmEzNyIsIm5iZiI6MTc1OTY4MjExOS4wNzcsInN1YiI6IjY4ZTI5ZTQ3M2EwMTA1Njk4ZTljYWI0ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IadGfuyXLcwGsFV3Mm4QiCY3QXjWQGYiAK9F61H6nKY";
 
 const options = {
-  method: 'GET',
-  url: 'https://api.themoviedb.org/3/trending/movie/day?language=pt-BR',
+  method: "GET",
+  url: `https://api.themoviedb.org/3/trending/movie/day?language=pt-BR`,
   headers: {
-    accept: 'application/json',
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNmEwZDJhMzM1NWQxOTUwYTVhNjZmYjZjNDExNmEzNyIsIm5iZiI6MTc1OTY4MjExOS4wNzcsInN1YiI6IjY4ZTI5ZTQ3M2EwMTA1Njk4ZTljYWI0ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IadGfuyXLcwGsFV3Mm4QiCY3QXjWQGYiAK9F61H6nKY'
-  }
-}
+    accept: "application/json",
+    Authorization: token,
+  },
+};
 
 async function carregarFilmes() {
   try {
-    const res = await axios.request(options)
-    filmes.value = res.data.results.slice(2, 8)
+    const res = await axios.request(options);
+    filmes.value = res.data.results.slice(2, 8);
+
+    for (const filme of filmes.value) {
+      const logoRes = await axios.get(
+        `https://api.themoviedb.org/3/movie/${filme.id}/images?language=pt-BR&include_image_language=pt,null`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: token,
+          },
+        }
+      );
+      filme.logo_path =
+        logoRes.data.logos.length > 0 ? logoRes.data.logos[0].file_path : null;
+    }
   } catch (erro) {
-    console.error('Erro ao buscar filmes:', erro)
+    console.error("Erro ao buscar filmes:", erro);
   }
 }
 
+function verDetalhes(filmeId) {
+  router.push({ name: "detalhefilme", params: { id: filmeId } });
+}
+
 onMounted(() => {
-  carregarFilmes()
-})
+  carregarFilmes();
+});
 </script>
 
 <template>
@@ -33,14 +56,19 @@ onMounted(() => {
     <h1>Assista aos melhores filmes na Koda Films</h1>
 
     <section class="filmes-grid">
-      <!-- percorre os filmes -->
-      <div class="filme" v-for="filme in filmes" :key="filme.id">
+      <div class="filme" v-for="filme in filmes" :key="filme.id" @click="verDetalhes(filme.id)">
         <img
-          class="filme-poster"
-          :src="`https://image.tmdb.org/t/p/w500${filme.backdrop_path}`"
-          :alt="filme.title"
+          v-if="filme.logo_path"
+          :src="`https://image.tmdb.org/t/p/original${filme.logo_path}`"
+          :alt="`${filme.title}`"
+          class="logo-filme"
         />
-        <p>{{ filme.title }}</p>
+        <img
+          v-if="filme.backdrop_path"
+          :src="`https://image.tmdb.org/t/p/w500${filme.backdrop_path}`"
+          :alt="`${filme.title}`"
+          class="backdrop-filme"
+        />
       </div>
     </section>
   </div>
@@ -62,15 +90,22 @@ onMounted(() => {
 }
 
 .filme {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
+  cursor: pointer;
 }
 
-.filme-poster {
+.backdrop-filme {
   width: 100%;
   border-radius: 8px;
-  aspect-ratio: 3 / 2;
   object-fit: cover;
+}
+
+.logo-filme {
+  position: absolute;
+  bottom: 1rem;
+  left: 20px;
+  height: 4rem;
+  max-width: 8rem;
+  object-fit: contain;
 }
 </style>

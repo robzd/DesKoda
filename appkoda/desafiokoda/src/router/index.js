@@ -11,7 +11,7 @@ const router = createRouter({
       component: TelaPrincipal,
     },
     {
-      path: '/detalhefilme',
+      path: '/filme/:id',
       name: 'detalhefilme',
       component: DetalheFilme,
     },
