@@ -26,6 +26,7 @@ const pesquisaFeita = ref("");
           :digitado="pesquisaFeita"
           :key="pesquisaFeita"
           @closeModal="openModal = false"
+          
         />
       </div>
     </div>

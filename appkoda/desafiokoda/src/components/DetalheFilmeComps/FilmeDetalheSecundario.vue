@@ -10,13 +10,12 @@ const filmeId = route.params.id;
 const filmedetalhesecundario = ref([]);
 const creditosfilme = ref([]);
 
-const token =
-  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNmEwZDJhMzM1NWQxOTUwYTVhNjZmYjZjNDExNmEzNyIsIm5iZiI6MTc1OTY4MjExOS4wNzcsInN1YiI6IjY4ZTI5ZTQ3M2EwMTA1Njk4ZTljYWI0ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IadGfuyXLcwGsFV3Mm4QiCY3QXjWQGYiAK9F61H6nKY";
+const token = import.meta.env.VITE_TMDB_TOKEN;
 
 async function carregarFilme() {
   try {
     const res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeId}/images?language=pt-BR`,
+      `https://api.themoviedb.org/3/movie/${filmeId}/images`,
       {
         headers: {
           accept: "application/json",
@@ -29,7 +28,7 @@ async function carregarFilme() {
       .map((b) => b.file_path);
 
     const creditsRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeId}/credits?language=pt-BR`,
+      `https://api.themoviedb.org/3/movie/${filmeId}/credits`,
       {
         headers: {
           accept: "application/json",

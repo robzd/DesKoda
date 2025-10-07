@@ -13,8 +13,7 @@ const { digitado } = defineProps({
 
 const resultadofilmes = ref([]);
 
-const token =
-  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNmEwZDJhMzM1NWQxOTUwYTVhNjZmYjZjNDExNmEzNyIsIm5iZiI6MTc1OTY4MjExOS4wNzcsInN1YiI6IjY4ZTI5ZTQ3M2EwMTA1Njk4ZTljYWI0ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IadGfuyXLcwGsFV3Mm4QiCY3QXjWQGYiAK9F61H6nKY";
+const token = import.meta.env.VITE_TMDB_TOKEN;
 
 async function carregarFilmes() {
   try {
@@ -49,14 +48,13 @@ async function carregarFilmes() {
 }
 
 function verDetalhes(filmeId) {
+  emit("closeModal");
   router.push({ name: "detalhefilme", params: { id: filmeId } });
-  console.log("abriu detalhes")
 }
 
 onMounted(() => {
   carregarFilmes();
 });
-
 </script>
 
 <template>
@@ -69,12 +67,7 @@ onMounted(() => {
         v-for="filme in resultadofilmes"
         :key="filme.id"
         class="filme-espaco"
-        @click="
-          () => {
-            console.log('clicado', filme.id);
-            verDetalhes(filme.id);
-          }
-        "
+        @click="verDetalhes(filme.id)"
       >
         <img
           v-if="filme.fotofilme"
