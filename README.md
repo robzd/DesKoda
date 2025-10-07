@@ -5,6 +5,7 @@ Primeiro certifique-se de que possui o Git e o Node instalados em sua máquina
 Depois, faça a clonagem desse repositório via terminal em uma pasta de sua escolha, acesse a pasta raíz do projeto e rode ele através dos seguintes comandos:  
 <pre>
   git clone https://github.com/robzd/DesKoda
+  cd DesKoda
   cd appkoda
   cd desafiokoda
   npm install
