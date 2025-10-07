@@ -1,7 +1,7 @@
 <script setup>
-import FilmePrincipal from "../components/FilmePrincipal.vue";
-import FilmesRecomendados from "../components/FilmesRecomendados.vue";
-import FilmesGenero from "../components/FilmesGenero.vue";
+import FilmePrincipal from "../components/TelaPrincipalComps/FilmePrincipal.vue";
+import FilmesRecomendados from "../components/TelaPrincipalComps/FilmesRecomendados.vue";
+import FilmesGenero from "../components/TelaPrincipalComps/FilmesGenero.vue";
 
 </script>
 

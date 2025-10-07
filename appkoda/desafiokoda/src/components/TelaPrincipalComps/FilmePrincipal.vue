@@ -1,10 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
-
 
 const filmeprincipal = ref();
 const logo = ref();
@@ -24,7 +23,7 @@ const options = {
 async function carregarFilme() {
   try {
     const res = await axios.request(options);
-    filmeprincipal.value = res.data.results[1];
+    filmeprincipal.value = res.data.results[0];
 
     const logoRes = await axios.get(
       `https://api.themoviedb.org/3/movie/${filmeprincipal.value.id}/images?language=pt-BR&include_image_language=pt,null`,
@@ -35,18 +34,16 @@ async function carregarFilme() {
         },
       }
     );
-
-    if (logoRes.data.logos.length > 0) {
-      logo.value = logoRes.data.logos[0].file_path;
-    }
+    logo.value =
+      logoRes.data.logos.length > 0 ? logoRes.data.logos[0].file_path : null;
   } catch (erro) {
-    console.error("Erro ao buscar filme ou logo:", erro);
+    console.error("Erro:", erro);
   }
 }
 
-  function verDetalhes(filmeId) {
-    router.push({ name: "detalhefilme", params: { id: filmeId } });
-  }
+function verDetalhes(filmeId) {
+  router.push({ name: "detalhefilme", params: { id: filmeId } });
+}
 
 onMounted(() => {
   carregarFilme();
@@ -54,13 +51,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="filme-principal" @click="verDetalhes(filmeprincipal.id)">
+  <div
+    v-if="filmeprincipal"
+    class="filme-principal"
+    @click="verDetalhes(filmeprincipal.id)"
+  >
     <img
       v-if="logo"
       :src="`https://image.tmdb.org/t/p/original${logo}`"
       :alt="`${filmeprincipal.title} logo`"
       class="logo-filme"
     />
+    <h2 v-else class="titulo-digitado">{{ filmeprincipal.title }}</h2>
+
     <img
       v-if="filmeprincipal"
       :src="`https://image.tmdb.org/t/p/original${filmeprincipal.backdrop_path}`"
@@ -91,5 +94,15 @@ onMounted(() => {
   height: 10rem;
   width: 40rem;
   object-fit: contain;
+}
+
+.titulo-digitado {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 5px;
 }
 </style>

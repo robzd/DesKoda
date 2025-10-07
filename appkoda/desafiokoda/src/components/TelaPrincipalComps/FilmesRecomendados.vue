@@ -22,7 +22,7 @@ const options = {
 async function carregarFilmes() {
   try {
     const res = await axios.request(options);
-    filmes.value = res.data.results.slice(2, 8);
+    filmes.value = res.data.results.slice(1, 7);
 
     for (const filme of filmes.value) {
       const logoRes = await axios.get(
@@ -56,13 +56,19 @@ onMounted(() => {
     <h1>Assista aos melhores filmes na Koda Films</h1>
 
     <section class="filmes-grid">
-      <div class="filme" v-for="filme in filmes" :key="filme.id" @click="verDetalhes(filme.id)">
+      <div
+        class="filme"
+        v-for="filme in filmes"
+        :key="filme.id"
+        @click="verDetalhes(filme.id)"
+      >
         <img
           v-if="filme.logo_path"
           :src="`https://image.tmdb.org/t/p/original${filme.logo_path}`"
           :alt="`${filme.title}`"
           class="logo-filme"
         />
+        <h5 v-else class="titulo-digitado">{{ filme.title }}</h5>
         <img
           v-if="filme.backdrop_path"
           :src="`https://image.tmdb.org/t/p/w500${filme.backdrop_path}`"
@@ -107,5 +113,15 @@ onMounted(() => {
   height: 4rem;
   max-width: 8rem;
   object-fit: contain;
+}
+
+.titulo-digitado {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 5px;
 }
 </style>

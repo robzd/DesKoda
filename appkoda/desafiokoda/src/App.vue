@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import TheHeader from "./components/TheHeader.vue";
+import TheHeader from "./components/HeaderComps/TheHeader.vue";
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import TheHeader from "./components/TheHeader.vue";
   text-align: center;
   margin-top: 0px;
   width: 100%;
-  height: auto;
+  min-height: 100vh;
   background-color: #000000;
 }
 </style>
