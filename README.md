@@ -11,7 +11,11 @@ Depois, faça a clonagem desse repositório via terminal em uma pasta de sua esc
   npm run build
   npm run preview
 </pre>
+Após isso, basta acessar a URL ```localhost:4173``` em seu navegador  
 Ou, caso deseje rodar o projeto em modo de desenvolvedor para ter acesso a informações estruturais do projeto, troque as últimas duas linhas por:
 <pre>
   npm run dev
 </pre>
+Em seguida, acesse a URL ```localhost:5173``` em seu navegador
+
+## Bons testes!
