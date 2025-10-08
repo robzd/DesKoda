@@ -14,7 +14,7 @@ const token = import.meta.env.VITE_TMDB_TOKEN;
 async function carregarFilme() {
   try {
     const elencoRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeId}/credits?language=pt-BR`,
+      `https://api.themoviedb.org/3/movie/${filmeId}/credits?`,
       {
         headers: {
           accept: "application/json",

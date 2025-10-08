@@ -25,7 +25,7 @@ async function carregarFilmes() {
 
     for (const filme of filmes.value) {
       const logoRes = await axios.get(
-        `https://api.themoviedb.org/3/movie/${filme.id}/images?language=pt-BR&include_image_language=pt,null`,
+        `https://api.themoviedb.org/3/movie/${filme.id}/images?`,
         {
           headers: {
             accept: "application/json",

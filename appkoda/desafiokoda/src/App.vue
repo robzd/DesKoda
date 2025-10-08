@@ -6,7 +6,7 @@ import TheHeader from "./components/HeaderComps/TheHeader.vue";
 <template>
   <div class="app">
     <TheHeader />
-    <RouterView />
+    <RouterView :key="$route.fullPath" />
   </div>
 </template>
 

@@ -33,7 +33,7 @@ async function carregarFilmes() {
       .slice(0, 20)
       .map((a) => ({
         id: a.id,
-        nome: a.original_title,
+        nome: a.title ? a.title : a.original_title,
         sinopse: a.overview
           ? a.overview.length > 150
             ? a.overview.slice(0, 150) + "..."

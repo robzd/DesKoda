@@ -26,7 +26,7 @@ async function carregarFilme() {
     filmedetalheprincipal.value = res.data;
 
     const logoRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmedetalheprincipal.value.id}/images?language=pt-BR&include_image_language=pt,null`,
+      `https://api.themoviedb.org/3/movie/${filmedetalheprincipal.value.id}/images?`,
       {
         headers: {
           accept: "application/json",
@@ -67,7 +67,10 @@ onMounted(() => {
           {{ genero.name }}
         </p>
       </div>
-      <p class="sinopse">{{ filmedetalheprincipal.overview }}</p>
+      <p v-if="filmedetalheprincipal.overview" class="sinopse">
+        {{ filmedetalheprincipal.overview }}
+      </p>
+      <p v-else class="sinopse">Sinopse indisponível</p>
     </div>
     <img
       :src="`https://image.tmdb.org/t/p/original${filmedetalheprincipal.backdrop_path}`"

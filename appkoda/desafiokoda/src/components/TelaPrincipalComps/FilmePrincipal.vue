@@ -25,7 +25,7 @@ async function carregarFilme() {
     filmeprincipal.value = res.data.results[0];
 
     const logoRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeprincipal.value.id}/images?language=pt-BR&include_image_language=pt,null`,
+      `https://api.themoviedb.org/3/movie/${filmeprincipal.value.id}/images?`,
       {
         headers: {
           accept: "application/json",
