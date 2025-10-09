@@ -1,7 +1,5 @@
 <script setup>
-import FilmeDetalhePrincipal from "../components/DetalheFilmeComps/FilmeDetalhePrincipal.vue";
-import FilmeDetalheSecundario from "../components/DetalheFilmeComps/FilmeDetalheSecundario.vue";
-import ElencoDetalhe from "../components/DetalheFilmeComps/ElencoDetalhe.vue";
+
 </script>
 
 <template>

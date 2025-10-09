@@ -22,13 +22,14 @@ const generos = {
     878: "Ficção Científica",
 }
 
+const token = import.meta.env.VITE_TMDB_TOKEN;
+
 const options = {
   method: "GET",
   url: `https://api.themoviedb.org/3/discover/movie?&sort_by=popularity.desc&with_genres=${props.generoId}&language=pt-BR`,
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNmEwZDJhMzM1NWQxOTUwYTVhNjZmYjZjNDExNmEzNyIsIm5iZiI6MTc1OTY4MjExOS4wNzcsInN1YiI6IjY4ZTI5ZTQ3M2EwMTA1Njk4ZTljYWI0ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IadGfuyXLcwGsFV3Mm4QiCY3QXjWQGYiAK9F61H6nKY",
+    Authorization: token,
   },
 };
 
