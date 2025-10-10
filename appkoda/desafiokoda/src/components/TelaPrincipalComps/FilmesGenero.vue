@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useFilmes } from "@/composables/useFilme";
 
 const router = useRouter();
 
@@ -9,10 +9,8 @@ const props = defineProps({
   generoId: {
     type: String,
     required: true,
-  },
-});
-
-const filmes = ref([]);
+  }
+})
 
 const generos = {
     28: "Ação",
@@ -22,41 +20,23 @@ const generos = {
     878: "Ficção Científica",
 }
 
-const token = import.meta.env.VITE_TMDB_TOKEN;
-
-const options = {
-  method: "GET",
-  url: `https://api.themoviedb.org/3/discover/movie?&sort_by=popularity.desc&with_genres=${props.generoId}&language=pt-BR`,
-  headers: {
-    accept: "application/json",
-    Authorization: token,
-  },
-};
-
-async function carregarFilmes() {
-  try {
-    const res = await axios.request(options);
-    filmes.value = res.data.results.slice(0, 5);
-  } catch (erro) {
-    console.error("Erro ao buscar filmes:", erro);
-  }
-}
+const { carregarFilmesGenero, filmesGenero } = useFilmes();
 
 function verDetalhes(filmeId) {
-  router.push({ name: "detalhefilme", params: { id: filmeId } });
+  router.push({ name: "detalhefilme", params: { filmeid: filmeId } });
 }
 
 onMounted(() => {
-  carregarFilmes();
+  carregarFilmesGenero(props.generoId)
 });
 
 </script>
 
 <template>
   <div class="filmes-genero">
-    <h2>{{ generos[props.generoId]}}</h2>
+    <h2>{{ generos[props.generoId] }}</h2>
     <div class="filmes-lista">
-      <div class="filme" v-for="filme in filmes" :key="filme.id" @click="verDetalhes(filme.id)">
+      <div class="filme" v-for="filme in filmesGenero[props.generoId]" :key="filme.id" @click="verDetalhes(filme.id)">
         <img
           class="filme-poster"
           :src="`https://image.tmdb.org/t/p/w500${filme.poster_path}`"

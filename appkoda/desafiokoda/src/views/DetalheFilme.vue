@@ -1,5 +1,13 @@
 <script setup>
+import { onMounted } from 'vue';
 
+const props = defineProps({
+  filmeid: String,
+})
+
+onMounted(() => {
+  console.log(props.filmeid)
+});
 </script>
 
 <template>

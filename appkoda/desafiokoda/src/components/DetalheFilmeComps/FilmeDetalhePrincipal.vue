@@ -5,7 +5,7 @@ import axios from "axios";
 
 const route = useRoute();
 
-const filmeId = route.params.id;
+// const filmeId = route.params.id;
 
 const filmedetalheprincipal = ref();
 const logo = ref();
@@ -45,6 +45,8 @@ async function carregarFilme() {
 
 onMounted(() => {
   carregarFilme();
+
+  // console.log(filmeId)
 });
 </script>
 

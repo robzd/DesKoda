@@ -1,33 +1,31 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import { useFilmes } from '@/composables/useFilme.js'
 
 const router = useRouter();
 
-const {
-  carregarFilmePrincipal, listaFilmePrincipal: filmeprincipal
-} = useFilmes()
-
+const { carregarFilmePrincipal, filmePrincipal } = useFilmes()
 
 function verDetalhes(filmeId) {
-  router.push({ name: "detalhefilme", params: { id: filmeId } });
+  router.push({ name: "detalhefilme", params: { filmeid: filmeId } });
 }
 
 onMounted(() => {
   carregarFilmePrincipal();
 });
+
 </script>
 
 <template>
-  <div v-if="filmeprincipal" class="filme-principal" @click="verDetalhes(filmeprincipal.id)">
-    <img v-if="filmeprincipal.logo" :src="`https://image.tmdb.org/t/p/original${filmeprincipal.logo}`" :alt="`${filmeprincipal.title} logo`"
-      class="logo-filme" />
-    <h2 v-else class="titulo-digitado">{{ filmeprincipal.title }}</h2>
+  <div v-if="filmePrincipal" class="filme-principal" @click="verDetalhes(filmePrincipal.id)">
+    <img v-if="filmePrincipal.logo" :src="`https://image.tmdb.org/t/p/original${filmePrincipal.logo}`"
+      :alt="`${filmePrincipal.title} logo`" class="logo-filme" />
+    <h2 v-else class="titulo-digitado">{{ filmePrincipal.title }}</h2>
 
-    <img v-if="filmeprincipal" :src="`https://image.tmdb.org/t/p/original${filmeprincipal.backdrop_path}`"
-      :alt="filmeprincipal.title" class="backdrop-filme" />
+    <img v-if="filmePrincipal" :src="`https://image.tmdb.org/t/p/original${filmePrincipal.backdrop_path}`"
+      :alt="filmePrincipal.title" class="backdrop-filme" />
   </div>
 </template>
 

@@ -5,27 +5,71 @@ import { ref } from 'vue'
 export function useFilmes() {
     const axios = useAxios();
 
-    const listaFilmePrincipal = ref([]);
+    const filmePrincipal = ref();
+    const filmesRecomendados = ref([])
+    const filmesGenero = ref([])
 
-    const carregarFilme = async () => {
+    const filmeDetalhePrincipal = ref();
+
+    const carregarFilmePrincipal = async () => {
         try {
-            const res = await axios.get("/trending/movie/day?language=pt-BR");
 
-            const logoRes = await axios.get(`/movie/${res.data.results[0].id}/images?`,);
-            
-            const filmeprincipal = {
-                ...res.data.results[0],
-                logo: logoRes.data.logos.length > 0 ? logoRes.data.logos[0].file_path : null
+            const resFilmePrincipal = await axios.get("/trending/movie/day?language=pt-BR");
+            const logoPrincipalRes = await axios.get(`/movie/${resFilmePrincipal.data.results[0].id}/images?`,);
+
+            filmePrincipal.value = {
+                ...resFilmePrincipal.data.results[0],
+                logo: logoPrincipalRes.data.logos.length > 0 ? logoPrincipalRes.data.logos[0].file_path : null
             }
 
-            console.log(filmeprincipal)
-
-            listaFilmePrincipal.value = filmeprincipal;
         } catch (erro) {
             console.error("Erro:", erro);
         }
     }
 
-    return { listaFilmePrincipal, carregarFilme }
+    const carregarFilmesRecomendados = async () => {
+        try {
+            const resFilmesRecomendados = await axios.get("/trending/movie/day?language=pt-BR");
+            filmesRecomendados.value = resFilmesRecomendados.data.results.slice(1, 7)
+
+            for (const filmerecomendado of filmesRecomendados.value) {
+                const logoRecomendadosRes = await axios.get(`/movie/${filmerecomendado.id}/images?`)
+
+                filmerecomendado.logo_path = logoRecomendadosRes.data.logos.length > 0 ? logoRecomendadosRes.data.logos[0].file_path : null;
+            }
+        } catch (erro) {
+            console.log("Erro:", erro)
+        }
+    }
+
+    const carregarFilmesGenero = async (generoId) => {
+        try {
+
+            const resGenero = await axios.get(`/discover/movie?&sort_by=popularity.desc&with_genres=${generoId}&language=pt-BR`);
+            filmesGenero.value[generoId] = resGenero.data.results.slice(0, 5)
+
+        } catch (erro) {
+            console.log("Erro:", erro)
+        }
+    }
+
+    const carregarFilmeDetalhePrincipal = async () => {
+        try{
+            const resFilmeDetalhePrincipal = axios.get()
+        }catch(erro){
+            console.log("Erro:", erro)
+        }
+    }
+
+    return { 
+        filmePrincipal, 
+        filmesRecomendados, 
+        filmesGenero, 
+        filmeDetalhePrincipal, 
+        carregarFilmePrincipal, 
+        carregarFilmesRecomendados, 
+        carregarFilmesGenero, 
+        carregarFilmeDetalhePrincipal 
+    }
 
 }
