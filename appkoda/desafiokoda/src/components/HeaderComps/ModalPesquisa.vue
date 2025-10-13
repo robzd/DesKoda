@@ -1,70 +1,36 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import { useFilmes } from "../../composables/useFilme.js";
 
 const router = useRouter();
 
+const { resultadoPesquisa, carregarResultadoPesquisa } = useFilmes();
+
 const emit = defineEmits(["closeModal"]);
 
-const { digitado } = defineProps({
-  digitado: String,
+const { pesquisa } = defineProps({
+  pesquisa: String,
 });
-
-const resultadofilmes = ref([]);
-
-const token = import.meta.env.VITE_TMDB_TOKEN;
-
-async function carregarFilmes() {
-  try {
-    const filmesRes = await axios.get(
-      `https://api.themoviedb.org/3/search/movie?query=${digitado}&language=pt-BR&page=1`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: token,
-        },
-      }
-    );
-
-    resultadofilmes.value = (
-      filmesRes.data.results ? filmesRes.data.results : []
-    )
-      .slice(0, 20)
-      .map((a) => ({
-        id: a.id,
-        nome: a.title ? a.title : a.original_title,
-        sinopse: a.overview
-          ? a.overview.length > 150
-            ? a.overview.slice(0, 150) + "..."
-            : a.overview
-          : "Sinopse indisponível",
-        fotofilme: a.poster_path,
-        data: a.release_date ? a.release_date.slice(0, 4) : "—",
-      }));
-  } catch (erro) {
-    console.error("Erro:", erro);
-  }
-}
 
 function verDetalhes(filmeId) {
   emit("closeModal");
-  router.push({ name: "detalhefilme", params: { id: filmeId } });
+  router.push({ name: "detalhefilme", params: { filmeid: filmeId } });
 }
 
 onMounted(() => {
-  carregarFilmes();
+  carregarResultadoPesquisa(pesquisa);
 });
 </script>
 
 <template>
-  <div v-if="resultadofilmes" class="modalpesquisa">
+  <div v-if="resultadoPesquisa" class="text-900 justify-content-left text-left pr-3 mt-4 max-h-screen">
     <h4>Resultados da busca:</h4>
-    <h2>{{ digitado }}</h2>
+    <h2>{{ pesquisa }}</h2>
 
     <div class="listafilmes">
       <div
-        v-for="filme in resultadofilmes"
+        v-for="filme in resultadoPesquisa"
         :key="filme.id"
         class="filme-espaco"
         @click="verDetalhes(filme.id)"
@@ -93,6 +59,7 @@ onMounted(() => {
   max-height: 70vh;
   overflow-y: auto;
   padding-right: 10px;
+  margin-top: 15px;
 }
 
 .listafilmes {

@@ -1,6 +1,8 @@
 import './assets/main.css'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
+import 'primeflex/primeflex.css'
+import 'primeicons/primeicons.css'
 
 
 import { createApp } from 'vue'
@@ -10,11 +12,11 @@ import App from './App.vue'
 import router from './router'
 import axios from '@/plugins/axios'
 
-
-
-
 // componentes PrimeVue
 import Button from "primevue/button"
+import InputText from "primevue/inputtext";
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 
 // Importações dos Componentes do Sistema
 import FilmePrincipal from "./components/TelaPrincipalComps/FilmePrincipal.vue";
@@ -30,6 +32,12 @@ const app = createApp(App)
 
 // Componentes do Sistema
 app.component('Button', Button)
+app.component('InputText', InputText)
+app.component('IconField', IconField)
+app.component('InputIcon', InputIcon)
+
+// Componentes do Projeto
+
 app.component('FilmePrincipal', FilmePrincipal)
 app.component('FilmesRecomendados', FilmesRecomendados)
 app.component('FilmesGenero', FilmesGenero)

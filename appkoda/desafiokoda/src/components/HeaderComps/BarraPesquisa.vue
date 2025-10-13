@@ -7,27 +7,18 @@ const pesquisaFeita = ref("");
 </script>
 
 <template>
-  <div class="barra-pesquisa">
-    <button type="button" class="search-btn">
-      <img src="@/assets/search.png" alt="lupa" />
-    </button>
-    <input
-      type="text"
-      placeholder="Qual filme gostaria de assistir?"
-      @keyup.enter="openModal = true"
-      v-model="pesquisaFeita"
-      maxlength="40"
-    />
-
-    <div v-if="openModal" class="modal">
-      <div class="modal-branco">
-        <button class="modal-close" @click="openModal = false">×</button>
-        <ModalPesquisa
-          :digitado="pesquisaFeita"
-          :key="pesquisaFeita"
-          @closeModal="openModal = false"
-          
-        />
+  <div class="relative">
+    <IconField>
+      <InputIcon class="pi pi-search text-200" />
+      <InputText type="text" placeholder="Qual filme gostaria de assistir?" @keyup.enter="openModal = true"
+        v-model="pesquisaFeita" maxlength="40" size="small" class="bg-black border-600 text-white w-16rem pl-5" />
+    </IconField>
+    <div v-if="openModal"
+      class="fixed top-0 left-0 w-full h-full flex align-items-center justify-content-center z-5 bg-black-alpha-60 bg-opacity-50">
+      <div class="bg-white px-3 py-3 border-round-lg w-30rem h-40rem text-center shadow-2 relative">
+        <button class="absolute top-0 right-0 mt-2 mr-2 bg-transparent border-none cursor-pointer text-2xl"
+          @click="openModal = false">×</button>
+        <ModalPesquisa :pesquisa="pesquisaFeita" :key="pesquisaFeita" @closeModal="openModal = false" />
       </div>
     </div>
   </div>
@@ -35,69 +26,4 @@ const pesquisaFeita = ref("");
 
 
 <style scoped>
-.barra-pesquisa {
-  position: relative;
-}
-
-input[type="text"] {
-  padding: 6px 10px 6px 30px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: "Inter", sans-serif;
-  color: #767676;
-  background-color: black;
-  width: 38vh;
-}
-
-.search-btn {
-  position: absolute;
-  left: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.search-btn img {
-  width: 18px;
-  height: auto;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-branco {
-  background-color: white;
-  padding: 20px 30px;
-  border-radius: 10px;
-  width: 50%;
-  position: relative;
-  text-align: center;
-}
-
-.modal-close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  border: none;
-  background: transparent;
-  font-size: 30px;
-  cursor: pointer;
-}
 </style>

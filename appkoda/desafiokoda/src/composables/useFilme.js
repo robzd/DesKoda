@@ -13,6 +13,8 @@ export function useFilmes() {
     const filmeDetalheSecundario = ref();
     const filmeElencoDetalhe = ref([]);
 
+    const resultadoPesquisa = ref([])
+
     const carregarFilmePrincipal = async () => {
         try {
 
@@ -113,6 +115,32 @@ export function useFilmes() {
         }
     }
 
+    const carregarResultadoPesquisa = async (pesquisa) => {
+        try {
+            const resPesquisa = await axios.get(`/search/movie?query=${pesquisa}&language=pt-BR&page=1`);
+
+            resultadoPesquisa.value = (
+                resPesquisa.data.results ? resPesquisa.data.results : []
+            )
+                .slice(0, 20)
+                .map((a) => ({
+                    id: a.id,
+                    nome: a.title ? a.title : a.original_title,
+                    sinopse: a.overview
+                        ? a.overview.length > 150
+                            ? a.overview.slice(0, 150) + "..."
+                            : a.overview
+                        : "Sinopse indisponível",
+                    fotofilme: a.poster_path,
+                    data: a.release_date ? a.release_date.slice(0, 4) : "—",
+                }));
+
+        } catch (erro) {
+            console.log("Erro:", erro)
+        }
+    }
+
+    
     return {
         filmePrincipal,
         filmesRecomendados,
@@ -120,12 +148,14 @@ export function useFilmes() {
         filmeDetalhePrincipal,
         filmeDetalheSecundario,
         filmeElencoDetalhe,
+        resultadoPesquisa,
         carregarFilmePrincipal,
         carregarFilmesRecomendados,
         carregarFilmesGenero,
         carregarFilmeDetalhePrincipal,
         carregarFilmeDetalheSecundario,
-        carregarFilmeElencoDetalhe
+        carregarFilmeElencoDetalhe,
+        carregarResultadoPesquisa
     }
 
 }
