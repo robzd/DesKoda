@@ -1,50 +1,22 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
+import { useFilmes } from '@/composables/useFilme.js'
 
 const route = useRoute();
 
-const filmeId = route.params.id;
-
-const elenco = ref([]);
-
-const token = import.meta.env.VITE_TMDB_TOKEN;
-
-async function carregarFilme() {
-  try {
-    const elencoRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeId}/credits?`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: token,
-        },
-      }
-    );
-
-    elenco.value = (elencoRes.data.cast ? elencoRes.data.cast : [])
-      .slice(0, 18)
-      .map((c) => ({
-        nome: c.name,
-        personagem: c.character,
-        fotoator: c.profile_path,
-      }));
-  } catch (erro) {
-    console.error("Erro:", erro);
-  }
-}
+const { filmeElencoDetalhe, carregarFilmeElencoDetalhe } = useFilmes();
 
 onMounted(() => {
-  carregarFilme();
+  carregarFilmeElencoDetalhe(route.params.filmeid);
 });
 </script>
 
 <template>
-  <div v-if="elenco" class="elenco-detalhe">
+  <div v-if="filmeElencoDetalhe" class="elenco-detalhe">
     <h2>Elenco:</h2>
     <div class="elenco-lista">
-      <div class="ator" v-for="ator in elenco" :key="ator.nome">
+      <div class="ator" v-for="ator in filmeElencoDetalhe" :key="ator.nome">
         <img
           v-if="ator.fotoator"
           :src="`https://image.tmdb.org/t/p/w200${ator.fotoator}`"

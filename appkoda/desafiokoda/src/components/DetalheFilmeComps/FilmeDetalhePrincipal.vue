@@ -1,82 +1,44 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
+import { useFilmes } from '@/composables/useFilme.js'
 
 const route = useRoute();
 
-// const filmeId = route.params.id;
-
-const filmedetalheprincipal = ref();
-const logo = ref();
-
-const token = import.meta.env.VITE_TMDB_TOKEN;
-
-async function carregarFilme() {
-  try {
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeId}?language=pt-BR`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: token,
-        },
-      }
-    );
-    filmedetalheprincipal.value = res.data;
-
-    const logoRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmedetalheprincipal.value.id}/images?`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: token,
-        },
-      }
-    );
-
-    if (logoRes.data.logos.length > 0) {
-      logo.value = logoRes.data.logos[0].file_path;
-    }
-  } catch (erro) {
-    console.error("Erro ao buscar detalhes do filme:", erro);
-  }
-}
+const { carregarFilmeDetalhePrincipal, filmeDetalhePrincipal } = useFilmes()
 
 onMounted(() => {
-  carregarFilme();
-
-  // console.log(filmeId)
+  carregarFilmeDetalhePrincipal(route.params.filmeid);
 });
 </script>
 
 <template>
-  <div v-if="filmedetalheprincipal" class="filme-detalhe-principal">
+  <div v-if="filmeDetalhePrincipal" class="filme-detalhe-principal">
     <div class="filme-infos">
       <img
-        v-if="logo"
-        :src="`https://image.tmdb.org/t/p/original${logo}`"
-        :alt="`${filmedetalheprincipal.title} logo`"
+        v-if="filmeDetalhePrincipal.logo"
+        :src="`https://image.tmdb.org/t/p/original${filmeDetalhePrincipal.logo}`"
+        :alt="`${filmeDetalhePrincipal.title} logo`"
         class="logo-filme"
       />
-      <h2 v-else class="titulo-digitado">{{ filmedetalheprincipal.title }}</h2>
+      <h2 v-else class="titulo-digitado">{{ filmeDetalhePrincipal.title }}</h2>
       <div class="fileira">
-        <p>{{ filmedetalheprincipal.release_date.slice(0, 4) }}</p>
-        <p>{{ filmedetalheprincipal.runtime }} min</p>
+        <p>{{ filmeDetalhePrincipal.release_date.slice(0, 4) }}</p>
+        <p>{{ filmeDetalhePrincipal.runtime }} min</p>
       </div>
       <div class="fileira">
-        <p v-for="genero in filmedetalheprincipal.genres" :key="genero.id">
+        <p v-for="genero in filmeDetalhePrincipal.genres" :key="genero.id">
           {{ genero.name }}
         </p>
       </div>
-      <p v-if="filmedetalheprincipal.overview" class="sinopse">
-        {{ filmedetalheprincipal.overview }}
+      <p v-if="filmeDetalhePrincipal.overview" class="sinopse">
+        {{ filmeDetalhePrincipal.overview }}
       </p>
       <p v-else class="sinopse">Sinopse indisponível</p>
     </div>
     <img
-      :src="`https://image.tmdb.org/t/p/original${filmedetalheprincipal.backdrop_path}`"
-      :alt="filmedetalheprincipal.title"
+      :src="`https://image.tmdb.org/t/p/original${filmeDetalhePrincipal.backdrop_path}`"
+      :alt="filmeDetalhePrincipal.title"
       class="backdrop-filme"
     />
   </div>

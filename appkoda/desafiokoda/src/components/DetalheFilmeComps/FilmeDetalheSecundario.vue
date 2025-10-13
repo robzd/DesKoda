@@ -1,64 +1,23 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
+import { useFilmes } from '@/composables/useFilme.js'
 
 const route = useRoute();
 
-const filmeId = route.params.id;
-
-const filmedetalhesecundario = ref([]);
-const creditosfilme = ref([]);
-
-const token = import.meta.env.VITE_TMDB_TOKEN;
-
-async function carregarFilme() {
-  try {
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeId}/images`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: token,
-        },
-      }
-    );
-    filmedetalhesecundario.value = (res.data.posters ? res.data.posters : [])
-      .slice(0, 3)
-      .map((b) => b.file_path);
-
-    const creditsRes = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filmeId}/credits`,
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: token,
-        },
-      }
-    );
-
-    creditosfilme.value = (creditsRes.data.crew ? creditsRes.data.crew : [])
-      .slice(0, 3)
-      .map((c) => ({
-        job: c.job,
-        name: c.name,
-      }));
-  } catch (erro) {
-    console.error("Erro:", erro);
-  }
-}
+const { filmeDetalheSecundario, carregarFilmeDetalheSecundario } = useFilmes();
 
 onMounted(() => {
-  carregarFilme();
+  carregarFilmeDetalheSecundario(route.params.filmeid);
 });
 </script>
 
 <template>
-  <div v-if="filmedetalhesecundario" class="filme-detalhe-secundario">
+  <div v-if="filmeDetalheSecundario" class="filme-detalhe-secundario">
     <div class="posters">
       <h2>Posters:</h2>
       <div class="imagens-secundarias">
-        <div v-for="(imagem, index) in filmedetalhesecundario" :key="index">
+        <div v-for="(imagem, index) in filmeDetalheSecundario.posters" :key="index">
           <img
             :src="`https://image.tmdb.org/t/p/original${imagem}`"
             :alt="`Imagem secundária ${index + 1}`"
@@ -68,17 +27,9 @@ onMounted(() => {
     </div>
     <div class="infos-adicionais">
       <h2>Créditos</h2>
-      <div class="info-item">
-        {{ creditosfilme[0]?.job }}:
-        <h3>{{ creditosfilme[0]?.name }}</h3>
-      </div>
-      <div class="info-item">
-        {{ creditosfilme[1]?.job }}:
-        <h3>{{ creditosfilme[1]?.name }}</h3>
-      </div>
-      <div class="info-item">
-        {{ creditosfilme[2]?.job }}:
-        <h3>{{ creditosfilme[2]?.name }}</h3>
+      <div class="info-item" v-for="(c, i) in filmeDetalheSecundario.creditos" :key="i">
+        {{ c.job }}:
+        <h3>{{ c.name }}</h3>
       </div>
     </div>
   </div>
