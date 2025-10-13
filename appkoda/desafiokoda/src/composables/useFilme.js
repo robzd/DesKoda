@@ -127,8 +127,8 @@ export function useFilmes() {
                     id: a.id,
                     nome: a.title ? a.title : a.original_title,
                     sinopse: a.overview
-                        ? a.overview.length > 150
-                            ? a.overview.slice(0, 150) + "..."
+                        ? a.overview.length > 90
+                            ? a.overview.slice(0, 90) + "..."
                             : a.overview
                         : "Sinopse indisponível",
                     fotofilme: a.poster_path,
@@ -140,7 +140,7 @@ export function useFilmes() {
         }
     }
 
-    
+
     return {
         filmePrincipal,
         filmesRecomendados,
