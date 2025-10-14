@@ -17,6 +17,9 @@ import Button from "primevue/button"
 import InputText from "primevue/inputtext";
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import Select from 'primevue/select';
+import Dialog from 'primevue/dialog';
+import Card from 'primevue/card';
 
 // Importações dos Componentes do Sistema
 import FilmePrincipal from "./components/TelaPrincipalComps/FilmePrincipal.vue";
@@ -35,6 +38,9 @@ app.component('Button', Button)
 app.component('InputText', InputText)
 app.component('IconField', IconField)
 app.component('InputIcon', InputIcon)
+app.component('Select', Select)
+app.component('Dialog', Dialog)
+app.component('Card', Card)
 
 // Componentes do Projeto
 
