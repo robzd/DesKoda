@@ -11,11 +11,11 @@ function irParaHome() {
 
 <template>
   <nav>
-    <div class="cabecalho">
+    <div class="flex py-2 px-4 md:px-8 align-items-center justify-content-between">
       <img
         src="@/assets/Logotipo.png"
         alt="Logo Koda"
-        class="logo"
+        class="h-3.5rem w-auto cursor-pointer"
         @click="irParaHome()"
       />
       <BarraPesquisa />
@@ -26,16 +26,4 @@ function irParaHome() {
 
 
 <style scoped>
-.cabecalho {
-  display: flex;
-  padding: 10px 70px;
-  color: white;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo {
-  height: 40px;
-  width: auto;
-  cursor: pointer;
-}
 </style>

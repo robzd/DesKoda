@@ -54,9 +54,12 @@ app.component('TheHeader', TheHeader)
 
 
 app.use(PrimeVue, {
-    theme: {
-        preset: Aura
+  theme: {
+    preset: Aura,
+    options: {
+      darkModeSelector: ''
     }
+  }
 })
 
 app.use(axios, {

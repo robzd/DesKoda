@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useFilmes } from "../../composables/useFilme.js";
@@ -53,4 +53,4 @@ onMounted(() => {
 </template>
 
 <style scoped>
-</style>
+</style> -->

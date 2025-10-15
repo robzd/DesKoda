@@ -13,21 +13,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="filmeDetalheSecundario" class="filme-detalhe-secundario">
-    <div class="posters">
+  <div v-if="filmeDetalheSecundario" class="flex flex-column align-items-center md:flex-row m-5">
+    <div class="flex flex-column align-items-center md:w-5 text-white">
       <h2>Posters:</h2>
-      <div class="imagens-secundarias">
+      <div class="flex justify-content-center align-items-center gap-3 mt-5">
         <div v-for="(imagem, index) in filmeDetalheSecundario.posters" :key="index">
           <img
             :src="`https://image.tmdb.org/t/p/original${imagem}`"
             :alt="`Imagem secundária ${index + 1}`"
+            class="w-full max-w-12rem mb-2 border-round-lg"
           />
         </div>
       </div>
     </div>
-    <div class="infos-adicionais">
+    <div class="w-7 text-white gap-2">
       <h2>Créditos</h2>
-      <div class="info-item" v-for="(c, i) in filmeDetalheSecundario.creditos" :key="i">
+      <div class="m-4" v-for="(c, i) in filmeDetalheSecundario.creditos" :key="i">
         {{ c.job }}:
         <h3>{{ c.name }}</h3>
       </div>
@@ -36,42 +37,4 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.filme-detalhe-secundario {
-  margin: 20px 20px;
-  display: flex;
-}
-
-.imagens-secundarias {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  margin-top: 10px;
-}
-
-.imagens-secundarias img {
-  width: 100%;
-  max-width: 200px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-}
-
-.posters {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 40%;
-  color: white;
-}
-
-.infos-adicionais {
-  width: 60%;
-  color: white;
-  gap: 10px;
-}
-
-.info-item {
-  text-align: center;
-  margin: 20px;
-}
 </style>

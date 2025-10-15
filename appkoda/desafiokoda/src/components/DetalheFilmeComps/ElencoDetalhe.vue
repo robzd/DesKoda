@@ -13,14 +13,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="filmeElencoDetalhe" class="elenco-detalhe">
+  <div v-if="filmeElencoDetalhe" class="mt-3 text-white align-items-center">
     <h2>Elenco:</h2>
-    <div class="elenco-lista">
-      <div class="ator" v-for="ator in filmeElencoDetalhe" :key="ator.nome">
+    <div class="grid justify-content-center mt-4 px-2 gap-3">
+      <div class="text-center col-12 sm:col-3 lg:col-1" v-for="ator in filmeElencoDetalhe" :key="ator.nome">
         <img
           v-if="ator.fotoator"
           :src="`https://image.tmdb.org/t/p/w200${ator.fotoator}`"
           :alt="`Foto de ${ator.nome}`"
+          class="w-full max-w-10rem mb-2 border-round-lg"
         />
         <div v-else>Sem Foto</div>
         <h3>{{ ator.nome }}</h3>
@@ -31,30 +32,4 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.elenco-detalhe {
-  margin-top: 20px;
-  color: white;
-  align-items: center;
-}
-
-.elenco-lista {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-  margin-top: 10px;
-  padding: 0px 20px;
-}
-
-.elenco-lista img {
-  width: 100%;
-  max-width: 200px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-}
-
-.ator {
-  text-align: center;
-  width: 120px;
-}
 </style>

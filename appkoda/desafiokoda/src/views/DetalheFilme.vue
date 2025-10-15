@@ -7,7 +7,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="detalhe-filme">
+  <div class="flex flex-column h-full gap-5">
     <div>
       <FilmeDetalhePrincipal />
     </div>
@@ -22,10 +22,4 @@ const props = defineProps({
 
 
 <style scoped>
-.detalhe-filme {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 20px;
-}
 </style>

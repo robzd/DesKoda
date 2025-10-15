@@ -33,7 +33,9 @@ watch(visible, (isOpen) => {
 <template>
   <div class="flex justify-content-center">
     <Button label="Qual filme gostaria de assistir?" icon="pi pi-search" @click="visible = true"
-      class="gap-2 border-1 border-round-md border-solid border-600 bg-black p-2 pr-3" />
+      class="gap-2 border-1 border-round-md border-solid border-600 bg-black p-2 md:pr-3" :pt="{
+        label: { class: 'hidden md:block' }
+      }" />
 
 
     <Dialog v-model:visible="visible" modal :draggable="false" :closable="false" :dismissableMask="true"
@@ -70,6 +72,13 @@ watch(visible, (isOpen) => {
           Nenhum resultado.
         </div>
       </div>
+
+      <template #footer>
+        <div class="flex justify-content-end gap-2">
+          <p>esc</p>
+          <p class="text-900 cursor-pointer" @click="visible = false">Fechar</p>
+        </div>
+      </template>
     </Dialog>
   </div>
 </template>
