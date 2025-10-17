@@ -20,6 +20,7 @@ import InputIcon from 'primevue/inputicon';
 import Select from 'primevue/select';
 import Dialog from 'primevue/dialog';
 import Card from 'primevue/card';
+import Carousel from 'primevue/carousel';
 
 // Importações dos Componentes do Sistema
 import FilmePrincipal from "./components/TelaPrincipalComps/FilmePrincipal.vue";
@@ -41,6 +42,7 @@ app.component('InputIcon', InputIcon)
 app.component('Select', Select)
 app.component('Dialog', Dialog)
 app.component('Card', Card)
+app.component('Carousel', Carousel)
 
 // Componentes do Projeto
 
