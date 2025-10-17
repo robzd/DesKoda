@@ -62,6 +62,8 @@ export function useFilmes() {
             const resFilmeDetalhePrincipal = await axios.get(`/movie/${filmeId}?language=pt-BR`);
             const resLogoDetalhePrincipal = await axios.get(`/movie/${filmeId}/images?`);
 
+            console.log("Resposta Filme Principal:");
+
             filmeDetalhePrincipal.value = {
                 ...resFilmeDetalhePrincipal.data,
                 logo: resLogoDetalhePrincipal.data.logos.length > 0 ? resLogoDetalhePrincipal.data.logos[0].file_path : null

@@ -6,7 +6,11 @@ import 'primeicons/primeicons.css'
 
 
 import { createApp } from 'vue'
+
 import { createPinia } from 'pinia'
+import { createPersistedState } from 'pinia-plugin-persistedstate';
+const pinia = createPinia()
+pinia.use(createPersistedState())
 
 import App from './App.vue'
 import router from './router'
@@ -69,7 +73,7 @@ app.use(axios, {
   token: import.meta.env.VITE_TMDB_TOKEN,
 })
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')
